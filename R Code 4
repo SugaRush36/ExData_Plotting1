@@ -1,0 +1,21 @@
+> dataFile <- "./data/household_power_consumption.txt"
+> table <- read.table("household_power_consumption.txt", header=TRUE, sep=";", na.strings = "?")
+> table2 <- rbind(table[table$Date=="1/2/2007",],table[table$Date=="2/2/2007",])
+> table2$Date <- as.Date(table2$Date, "%d/%m/%Y")
+> table3<-cbind(table2, "DateTime" = as.POSIXct(paste(table2$Date, table2$Time)))
+> names(table3)
+
+> png(file = "plot4.png", height = 480, width = 480)
+> par(mfrow = c(2,2))
+
+> plot(table3$DateTime, table3$Global_active_power, type = "l", xlab = "", ylab = "Global Active Power")
+
+> plot(table3$DateTime, table3$Voltage, type = "l", xlab = "datetime", ylab = "Voltage")
+
+> plot(table3$DateTime, table3$Sub_metering_1, type = "l", xlab = "", ylab = "Energy Submetering")
+> lines(table3$DateTime, table3$Sub_metering_2, type = "l", col = "red")
+> lines(table3$DateTime, table3$Sub_metering_3, type = "l", col = "blue")
+> legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), col=c("black", "red", "blue"))
+
+> plot(table3$DateTime, table3$Global_reactive_power, type = "l", xlab = "datetime", ylab = "Global_reactive_power")
+> dev.off()
